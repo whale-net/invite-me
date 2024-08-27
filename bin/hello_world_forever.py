@@ -30,7 +30,7 @@ def forever():
         hell_o_world()
         
         sleeper_time = randint(10, 20)
-        logger.info('night night %s', sleeper_time)
+        logger.info('night night it''s sleepy time %s', sleeper_time)
         time.sleep(sleeper_time)
 
 
