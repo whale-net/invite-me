@@ -19,3 +19,9 @@ uv add <pkg>
 not sure how to pin versions
 locally I (alex) am running uv-python 0.3.4
 not sure how that maps
+
+docker needs to authenticate to ghcr to build
+despite being named classic, personal PAT classic seems to be the meta
+```
+https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic
+```
