@@ -4,6 +4,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 COPY . .
 
 RUN uv venv
+RUN source .venv/bin/activate
 RUN uv pip install .
 RUN opentelemetry-bootstrap -a install
 
