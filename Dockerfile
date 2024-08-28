@@ -10,7 +10,8 @@ ENV OTEL_SERVICE_NAME='invite-me'
 # ENV OTEL_TRACES_EXPORTER=console,otlp 
 # ENV OTEL_METRICS_EXPORTER=console 
 ENV OTEL_LOGS_EXPORTER=console,otlp
-ENV OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=0.0.0.0:4317
+# could just use OTEL_EXPORTER_OTLP_ENDPOINT
+ENV OTEL_EXPORTER_OTLP_LOGS_ENDPOINT=0.0.0.0:4317
 
 
 CMD ["uv", "run", "opentelemetry-instrument", "python", "bin/hello_world_forever.py"]

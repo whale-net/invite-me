@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def hell_o_world():
-    logger.info('OTEL_EXPORTER_OTLP_TRACES_ENDPOINT %s', os.getenv('OTEL_EXPORTER_OTLP_TRACES_ENDPOINT'))
+    logger.info('OTEL_EXPORTER_OTLP_LOGS_ENDPOINT %s', os.getenv('OTEL_EXPORTER_OTLP_LOGS_ENDPOINT'))
     my_num = randint(0, sys.maxsize)
     if my_num < A:
         logger.warning('this message is A bad message')
