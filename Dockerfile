@@ -5,6 +5,7 @@ COPY . .
 
 RUN uv venv
 RUN uv pip install .
+RUN opentelemetry-bootstrap -a install
 
 ENV OTEL_SERVICE_NAME='invite-me'
 # ENV OTEL_TRACES_EXPORTER=console,otlp 

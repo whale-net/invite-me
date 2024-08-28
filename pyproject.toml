@@ -10,6 +10,8 @@ dependencies = [
     "ruff>=0.6.2",
     "opentelemetry-distro>=0.47b0",
     "opentelemetry-exporter-otlp>=1.26.0",
+    # yes this is needed
+    "pip>=24.2",
 ]
 
 [build-system]
