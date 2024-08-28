@@ -25,3 +25,7 @@ despite being named classic, personal PAT classic seems to be the meta
 ```
 https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic
 ```
+
+## logging
+
+INSTRUMENTATION https://github.com/open-telemetry/opentelemetry-python-contrib/tree/main/instrumentation
