@@ -3,6 +3,7 @@ import time
 from random import randint
 import logging
 import datetime
+import os
 
 A = sys.maxsize / 4
 B = 1/4 + sys.maxsize / 2
@@ -14,6 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def hell_o_world():
+    logger.info('OTEL_EXPORTER_OTLP_TRACES_ENDPOINT %s', os.getenv('OTEL_EXPORTER_OTLP_TRACES_ENDPOINT'))
     my_num = randint(0, sys.maxsize)
     if my_num < A:
         logger.warning('this message is A bad message')
