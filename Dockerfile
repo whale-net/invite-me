@@ -17,8 +17,8 @@ ENV OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
 ENV OTEL_EXPORTER_OTLP_INSECURE=true
 
 # # temp
-ENV GRPC_VERBOSITY=debug
-ENV GRPC_TRACE=http,call_error,connectivity_state
+# ENV GRPC_VERBOSITY=debug
+# ENV GRPC_TRACE=http,call_error,connectivity_state
 
 
 CMD ["uv", "run", "opentelemetry-instrument", "python", "bin/hello_world_forever.py"]
