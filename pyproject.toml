@@ -1,0 +1,19 @@
+[project]
+name = "invite-me"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "opentelemetry-api>=1.26.0",
+    "opentelemetry-sdk>=1.26.0",
+    "ruff>=0.6.2",
+    "opentelemetry-distro>=0.47b0",
+    "opentelemetry-exporter-otlp>=1.26.0",
+    # yes this is needed
+    "pip>=24.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
