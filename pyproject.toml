@@ -6,9 +6,16 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "sqlalchemy>=2.0.32",
-    "psycopg>=3.2.1",
+    "psycopg-binary>=3.2.1",
     "pydantic>=2.8.2",
     "fastapi>=0.112.1",
+    "opentelemetry-api>=1.26.0",
+    "opentelemetry-sdk>=1.26.0",
+    "ruff>=0.6.2",
+    "opentelemetry-distro>=0.47b0",
+    "opentelemetry-exporter-otlp>=1.26.0",
+    # yes this is needed
+    "pip>=24.2",
 ]
 
 [build-system]

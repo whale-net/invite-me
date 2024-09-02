@@ -3,9 +3,9 @@
 # from invite_me.service import InviteService
 from dotenv import load_dotenv
 
-from invite_me.db import Base, engine, Session
-
 load_dotenv()
+
+from invite_me.db import Base, engine, Session
 
 
 def seed_db():
@@ -15,5 +15,8 @@ def seed_db():
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
     with Session() as session:
-
         pass
+
+
+def hello() -> str:
+    return "Hello from invite-me!"
