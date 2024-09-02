@@ -5,17 +5,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from invite_me.db import Base, engine, Session
+from invite_me.db import Base, engine
 
 
 def seed_db():
     # import all table clases
-    from .model import Request, Response, User
+    from .model import Request, Response, User  # noqa
 
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
-    with Session() as session:
-        pass
 
 
 def hello() -> str:
