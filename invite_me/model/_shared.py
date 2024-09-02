@@ -1,6 +1,5 @@
 import uuid_extensions
-from sqlalchemy import UUID
-from sqlalchemy.orm import mapped_column
+from sqlmodel import Field
 
 
 def id_col():
@@ -11,4 +10,4 @@ def id_col():
     :return:
         sqlalchemy.Column: Column configured to be a primary key and of type uuid7
     """
-    return mapped_column(UUID, primary_key=True, default=uuid_extensions.uuid7())
+    return Field(primary_key=True, default=uuid_extensions.uuid7())

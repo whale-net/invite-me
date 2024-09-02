@@ -1,10 +1,11 @@
-from sqlalchemy import Column, String
+from uuid import UUID
 
-from invite_me import Base
+from sqlmodel import SQLModel, Field
+
 from invite_me.model._shared import id_col
 
 
-class User(Base):
+class User(SQLModel, table=True):
     __tablename__ = "users"
-    id = id_col()
-    name = Column(String, nullable=False)
+    id: UUID = id_col()
+    name: str = Field(nullable=False)

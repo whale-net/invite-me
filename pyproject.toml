@@ -16,6 +16,7 @@ dependencies = [
     "opentelemetry-exporter-otlp>=1.26.0",
     # yes this is needed
     "pip>=24.2",
+    "sqlmodel>=0.0.22",
 ]
 
 [build-system]

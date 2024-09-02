@@ -1,12 +1,11 @@
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column
+from uuid import UUID
 
-from invite_me.db import Base
-from invite_me.model import Request
+from sqlmodel import SQLModel, Field
+
 from invite_me.model._shared import id_col
 
 
-class Response(Base):
+class Response(SQLModel, table=True):
     __tablename__ = "responses"
-    id = id_col()
-    request_id: Mapped[Request] = mapped_column(ForeignKey("requests.id"))
+    id: UUID = id_col()
+    request_id: UUID = Field(default=None)

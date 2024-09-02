@@ -2,6 +2,7 @@
 #
 # from invite_me.service import InviteService
 from dotenv import load_dotenv
+from sqlmodel import SQLModel
 
 load_dotenv()
 
@@ -12,8 +13,8 @@ def seed_db():
     # import all table clases
     from .model import Request, Response, User  # noqa
 
-    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
+    SQLModel.metadata.drop_all(engine)
+    SQLModel.metadata.create_all(engine)
 
 
 def hello() -> str:
