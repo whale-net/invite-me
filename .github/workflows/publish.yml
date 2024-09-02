@@ -3,7 +3,7 @@ name: Create a Docker image and publish it to GHCR
 on:
   push:
     #branches: ['release']
-    branches: ['main', 'feat/container']
+    branches: ['main']
 
 env:
   REGISTRY: ghcr.io
