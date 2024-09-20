@@ -1,10 +1,7 @@
 # __all__ = ["InviteService"]
 #
 # from invite_me.service import InviteService
-from dotenv import load_dotenv
 from sqlmodel import SQLModel
-
-load_dotenv()
 
 from invite_me.db import Base, engine
 

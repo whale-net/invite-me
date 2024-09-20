@@ -13,7 +13,6 @@ class InvitationService:
 
     def create_request(self, request: Request):
         try:
-
             with self._request_response_uow as uow:
                 uow.requests_repo.create_request(request=request)
                 uow.commit()

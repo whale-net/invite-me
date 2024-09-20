@@ -1,11 +1,10 @@
 FROM python:3.12-alpine
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
-COPY . .
+COPY . /app
 
-RUN uv venv
-RUN source .venv/bin/activate
-RUN uv pip install .
+WORKDIR /app
+RUN uv pip install --system -r pyproject.toml
 
 ENV OTEL_SERVICE_NAME='invite-me'
 # ENV OTEL_TRACES_EXPORTER=console,otlp 
@@ -20,5 +19,8 @@ ENV OTEL_EXPORTER_OTLP_INSECURE=true
 # ENV GRPC_VERBOSITY=debug
 # ENV GRPC_TRACE=http,call_error,connectivity_state
 
+EXPOSE 8000/tcp
 
-CMD ["uv", "run", "opentelemetry-instrument", "python", "bin/hello_world_forever.py"]
+#CMD ["uv", "run", "opentelemetry-instrument", "python", "bin/hello_world_forever.py"]
+WORKDIR invite_me
+CMD ["uv", "run", "fastapi", "dev"]

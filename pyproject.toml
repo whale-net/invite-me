@@ -17,6 +17,7 @@ dependencies = [
     # yes this is needed
     "pip>=24.2",
     "sqlmodel>=0.0.22",
+    "celery>=5.4.0",
 ]
 
 [build-system]

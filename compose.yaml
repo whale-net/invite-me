@@ -1,0 +1,18 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DB_CONN_STRING: "postgresql+psycopg://postgres:mysecretpassword@postgres:5432/postgres"
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /
+  postgres:
+    image: "postgres:alpine"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "mysecretpassword"

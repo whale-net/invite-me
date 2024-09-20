@@ -5,5 +5,5 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 Base = declarative_base()
 
-engine = create_engine(os.getenv("DB_CONN_STRING"), echo=True, echo_pool="debug")
+engine = create_engine(os.getenv("DB_CONN_STRING"), echo=True, echo_pool="debug", pool_pre_ping=True)
 sm = sessionmaker(bind=engine)
