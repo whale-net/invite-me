@@ -9,7 +9,7 @@ services:
       watch:
         - action: sync
           path: .
-          target: /
+          target: /app
   postgres:
     image: "postgres"
     ports:
