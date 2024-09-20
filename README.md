@@ -20,9 +20,17 @@ uv add <pkg>
 ```
 
 ## docker
-
 ```
 docker compose up
+```
+### to rebuild 
+```
+docker compose up --build
+```
+
+### to run with reload 
+```
+docker compose up --watch
 ```
 
 ## uv notes
