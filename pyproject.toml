@@ -20,6 +20,7 @@ dependencies = [
     "uuid7>=0.1.0",
     "python-dotenv>=1.0.1",
     "celery>=5.4.0",
+    "pytest>=8.3.3",
 ]
 
 [build-system]
