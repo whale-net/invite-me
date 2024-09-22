@@ -12,6 +12,11 @@ class InvitationService:
         self._request_response_uow = request_response_uow
 
     def create_request(self, request: Request):
+        """
+        Dispatches a new request
+        :param request:
+        :return:
+        """
         try:
             with self._request_response_uow as uow:
                 uow.requests_repo.create_request(request=request)
