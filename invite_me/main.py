@@ -16,9 +16,11 @@ sleep(1)
 seed_db()
 invitation_service = InvitationService(request_response_uow=SqlAlchemyRequestResponseUnitOfWork())
 
+
 @app.get("/")
 def hello():
-    return "world"
+    return "wfforld"
+
 
 @app.post("/invite/request")
 def create_request(request: Request):
