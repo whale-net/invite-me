@@ -1,4 +1,16 @@
 services:
+  worker:
+    build:
+      context: .
+      dockerfile: worker.dockerfile
+    depends_on:
+      - rabbit
+      - postgres
+
+  rabbit:
+    image: "rabbitmq:4-alpine"
+    ports:
+      - "5672:5672"
   web:
     build: .
     ports:
@@ -10,8 +22,12 @@ services:
         - action: sync
           path: .
           target: /app
+    depends_on:
+      - rabbit
+      - worker
+      - postgres
   postgres:
-    image: "postgres"
+    image: "postgres:alpine"
     ports:
       - "5432:5432"
     environment:
