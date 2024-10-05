@@ -1,6 +1,7 @@
 # __all__ = ["InviteService"]
 #
 # from invite_me.service import InviteService
+import uuid_extensions
 from sqlmodel import SQLModel
 
 
@@ -18,4 +19,4 @@ def seed_db():
 
 
 def hello() -> str:
-    return "Hello from invite-me!"
+    return uuid_extensions.uuid7()
