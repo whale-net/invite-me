@@ -1,3 +1,4 @@
+import pickle
 from typing import Optional
 
 from celery import Celery
@@ -19,11 +20,22 @@ class Fetcher:
     pass
 
 
-@app.task(name='execute_static')
-def execute_static(mod: str, cls: Optional[str] = None, func: Optional[str] = None, *args, **kwargs):
-    import importlib
-    modl = importlib.import_module(mod)
-    return dir(modl)
+@app.task(name="execute_obj")
+def execute_obj(obj, func, *args, **kwargs):
+    return pickle.dumps(getattr(pickle.loads(obj), func)(*args, **kwargs))
 
-# @app.task(name='create_request')
+
+@app.task(name='execute_static')
+def execute_static(module: str, cls: Optional[str] = None, func: Optional[str] = None, *args, **kwargs):
+    import importlib
+    mod = importlib.import_module(module)
+    res = None
+    if cls is not None:
+        mod = getattr(mod, cls)
+        if func is None:
+            res = mod(*args, **kwargs)
+
+    if not res:
+        res = getattr(mod, func)(*args, **kwargs)
+    return pickle.dumps(res)  # @app.task(name='create_request')
 # def create_request(request: Request):

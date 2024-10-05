@@ -32,3 +32,12 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: "mysecretpassword"
+
+  test:
+    build:
+      context: .
+      dockerfile: test.dockerfile
+    depends_on:
+      - rabbit
+      - postgres
+      - worker

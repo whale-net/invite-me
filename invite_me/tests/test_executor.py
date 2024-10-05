@@ -1,9 +1,9 @@
 import pytest
 
-from invite_me.executors import LocalExecutor
+from invite_me.executors import LocalExecutor, CeleryExecutor
 
 
-@pytest.fixture(scope="package", params=[LocalExecutor])
+@pytest.fixture(scope="package", params=[LocalExecutor, CeleryExecutor])
 def executor(request):
     yield request.param()
 
