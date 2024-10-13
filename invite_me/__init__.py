@@ -1,15 +1,16 @@
 # __all__ = ["InviteService"]
 #
 # from invite_me.service import InviteService
-from dotenv import load_dotenv
+import uuid_extensions
 from sqlmodel import SQLModel
-
-load_dotenv()
-
-from invite_me.db import Base, engine
 
 
 def seed_db():
+    """
+    Right now this runs on every restart of the application, which is frequent when we use hot reloading
+    todo: move to alembic for db migrations
+    """
+    from invite_me.db import engine
     # import all table clases
     from .model import Request, Response, User  # noqa
 
@@ -18,4 +19,4 @@ def seed_db():
 
 
 def hello() -> str:
-    return "Hello from invite-me!"
+    return uuid_extensions.uuid7()

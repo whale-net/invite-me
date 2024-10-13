@@ -1,0 +1,34 @@
+services:
+  worker:
+    build:
+      context: .
+      dockerfile: worker.dockerfile
+    depends_on:
+      - rabbit
+      - postgres
+
+  rabbit:
+    image: "rabbitmq:4-alpine"
+    ports:
+      - "5672:5672"
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DB_CONN_STRING: "postgresql+psycopg://postgres:mysecretpassword@postgres:5432/postgres"
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+    depends_on:
+      - rabbit
+      - worker
+      - postgres
+  postgres:
+    image: "postgres:alpine"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "mysecretpassword"
