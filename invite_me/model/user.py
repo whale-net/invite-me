@@ -10,5 +10,5 @@ class User(SQLModel, table=True):
     __tablename__ = "users"
     id: UUID = id_col()
     name: str = Field(nullable=False)
-    created_at: dt.datetime = Field(nullable=False)
-    updated_at: dt.datetime = Field(nullable=False)
+    created_at: dt.datetime = Field(nullable=False, default=dt.datetime.now())
+    updated_at: dt.datetime = Field(nullable=False, default=dt.datetime.now())

@@ -1,4 +1,7 @@
 import os
+from abc import ABC, abstractmethod
+from typing import List
+
 from dotenv import load_dotenv
 from time import sleep
 
@@ -8,11 +11,64 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from invite_me import seed_db, _celery
 from invite_me.executors import CeleryExecutor
-from invite_me.model import Request
+from invite_me.model import Request, User
 from invite_me.service import InvitationService
 from invite_me.uow.sqlalchemy.request_response import SqlAlchemyRequestResponseUnitOfWork
 
+class Inviter(ABC):
+    """
+    This is the class that will be inherited for api integrations.
+    """
+    @abstractmethod
+    def get_users(self) -> List[User]:
+        """
+        Returns all users formatted appropriately as invite_me.model.user.User.
+
+        :return: List of users
+        """
+
+    @abstractmethod
+    def send_message(self, user: User, message: str) -> None:
+        """
+        Sends a text message to the listed user.
+
+        :param user: user to send to.
+        :param message: string text to send.
+        :return: None
+        """
+
+class SlackInviter(Inviter):
+    def __init__(self, slack_token):
+        self._client = WebClient(token=slack_token)
+
+    def _get_slack_members(self):
+        try:
+            # Get the list of users in the workspace
+            response = self._client.users_list()
+            if response['ok']:
+                return response['members']
+            else:
+                print("Error fetching users:", response['error'])
+                return []
+        except SlackApiError as e:
+            print(f"Error fetching users: {e.response['error']}")
+            return []
+
+    def get_users(self) -> List[User]:
+
+        # how should this resolve? do we want to have a relationship between api users and users? just a quick lookup
+        # by implementation mapping their api user id to our internal user id?
+
+        return [User(id=sm['id'], name=sm['real_name']) for sm in self._get_slack_members() if not sm['deleted']]
+
+    def send_message(self, user: User, message: str) -> None:
+        self._client.chat_postMessage(channel=user.id)
+        pass
+
+
 app = FastAPI()
+
+slack_token = os.getenv("AppToken")
 
 # todo: this is here to wait for the postgres container to spin up. should use a sqlalchemy event to retry
 sleep(1)
@@ -24,24 +80,8 @@ def add(x, y):
     return x - y
 
 load_dotenv()
-slack_token = os.getenv("AppToken")
-
-client = WebClient(token=slack_token)
 
 # Function to get all members of the Slack workspace
-def get_slack_members():
-    # todo: we should get users and insert into a database table. can validate existing on startup? we never add or remove anyone
-    try:
-        # Get the list of users in the workspace
-        response = client.users_list()
-        if response['ok']:
-            return response['members']
-        else:
-            print("Error fetching users:", response['error'])
-            return []
-    except SlackApiError as e:
-        print(f"Error fetching users: {e.response['error']}")
-        return []
 
     # call this with the user_id set to the channel id field, ez
     # client.chat_postMessage()
