@@ -27,6 +27,5 @@ def service(requests_repo, responses_repo):
 class TestInvitationService:
     def test_create_response(self, service, requests_repo):
         service.create_request(Request(from_user=uuid_extensions.uuid7()))
-
         # todo more meaningful tests, this is just a starting point
         assert len(requests_repo._store) == 1
