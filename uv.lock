@@ -443,7 +443,7 @@ requires-dist = [
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "ruff", specifier = ">=0.6.2" },
-    { name = "slack-sdk" },
+    { name = "slack-sdk", specifier = ">=3.33.3" },
     { name = "sqlalchemy", specifier = ">=2.0.32" },
     { name = "sqlmodel", specifier = ">=0.0.22" },
     { name = "uuid7", specifier = ">=0.1.0" },

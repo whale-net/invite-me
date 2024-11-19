@@ -10,9 +10,7 @@ from fastapi import FastAPI
 
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
-from invite_me import seed_db, _celery
-from invite_me.executors import CeleryExecutor
-from invite_me.model import Request, User
+from invite_me.model import Request
 from invite_me.service import InvitationService
 from invite_me.uow.sqlalchemy.request_response import SqlAlchemyRequestResponseUnitOfWork
 
@@ -76,7 +74,15 @@ slack_token = os.getenv("AppToken")
 
 # todo: this is here to wait for the postgres container to spin up. should use a sqlalchemy event to retry
 sleep(1)
-seed_db()
+
+# TODO BETTER WAY TO SETUP DB
+_seed_db = False
+if _seed_db:
+    from invite_me import seed_db
+
+    seed_db()
+
+
 invitation_service = InvitationService(request_response_uow=SqlAlchemyRequestResponseUnitOfWork())
 
 

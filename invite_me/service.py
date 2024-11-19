@@ -21,6 +21,6 @@ class InvitationService:
             with self._request_response_uow as uow:
                 uow.requests_repo.create_request(request=request)
                 uow.commit()
-        except Exception as e:
+        except Exception:
             # todo: service should define its own errors
             raise

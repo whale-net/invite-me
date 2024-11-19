@@ -2,7 +2,6 @@ import pickle
 from abc import ABC, abstractmethod
 from typing import Optional, Any
 
-from invite_me import _celery
 from invite_me.tasks import execute_static, execute_obj
 
 
