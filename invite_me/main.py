@@ -64,10 +64,10 @@ class SlackInviter(Inviter):
             return []
 
     def get_users(self) -> List[InviterUser]:
-        return [InviterUser(id=sm['id'], name=sm['real_name'], full_user_info=sm) for sm in self._get_slack_members() if not sm['deleted']]
+        return [InviterUser(id=sm['id'], name=sm['real_name'], full_user_info=sm) for sm in self._get_slack_members() if (not sm['deleted']) and sm.get('profile') and sm['profile']['display_name'] == "koni"]
 
     def send_message(self, user: InviterUser, message: str) -> None:
-        self._client.chat_postMessage(channel=user.id, text="test message")
+        self._client.chat_postMessage(channel=user.id, text=message)
 
 
 app = FastAPI()
@@ -100,7 +100,7 @@ def hello():
     inviter = SlackInviter(slack_token=slack_token)
     users = inviter.get_users()
 
-    # res = CeleryExecutor(_celery.app).execute_static('invite_me.tmp', func='hello_world')
+    # inviter.send_message(user=users[0], message='test')
     return users
 
 
