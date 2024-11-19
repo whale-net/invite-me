@@ -12,7 +12,11 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 from invite_me.model import Request
 from invite_me.service import InvitationService
-from invite_me.uow.sqlalchemy.request_response import SqlAlchemyRequestResponseUnitOfWork
+from invite_me.uow.sqlalchemy.request_response import (
+    SqlAlchemyRequestResponseUnitOfWork,
+)
+from invite_me.uow.sqlalchemy.users import SqlAlchemyUserUnitOfWork
+
 
 @dataclass
 class InviterUser:
@@ -25,6 +29,7 @@ class Inviter(ABC):
     """
     This is the class that will be inherited for api integrations.
     """
+
     @abstractmethod
     def get_users(self) -> List[InviterUser]:
         """
@@ -52,17 +57,23 @@ class SlackInviter(Inviter):
         try:
             # Get the list of users in the workspace
             response = self._client.users_list()
-            if response['ok']:
-                return response['members']
+            if response["ok"]:
+                return response["members"]
             else:
-                print("Error fetching users:", response['error'])
+                print("Error fetching users:", response["error"])
                 return []
         except SlackApiError as e:
             print(f"Error fetching users: {e.response['error']}")
             return []
 
     def get_users(self) -> List[InviterUser]:
-        return [InviterUser(id=sm['id'], name=sm['real_name'], full_user_info=sm) for sm in self._get_slack_members() if (not sm['deleted']) and sm.get('profile') and sm['profile']['display_name'] == "koni"]
+        return [
+            InviterUser(id=sm["id"], name=sm["real_name"], full_user_info=sm)
+            for sm in self._get_slack_members()
+            if (not sm["deleted"])
+            and sm.get("profile")
+            and sm["profile"]["display_name"] == "koni"
+        ]
 
     def send_message(self, user: InviterUser, message: str) -> None:
         self._client.chat_postMessage(channel=user.id, text=message)
@@ -83,18 +94,22 @@ if _seed_db:
     seed_db()
 
 
-invitation_service = InvitationService(request_response_uow=SqlAlchemyRequestResponseUnitOfWork())
+invitation_service = InvitationService(
+    request_response_uow=SqlAlchemyRequestResponseUnitOfWork(),
+    user_uow=SqlAlchemyUserUnitOfWork(),
+)
 
 
 def add(x, y):
     return x - y
 
+
 load_dotenv()
 
 # Function to get all members of the Slack workspace
 
-    # call this with the user_id set to the channel id field, ez
-    # client.chat_postMessage()
+# call this with the user_id set to the channel id field, ez
+# client.chat_postMessage()
 
 
 @app.get("/")
@@ -106,6 +121,8 @@ def hello():
     inviter = SlackInviter(slack_token=slack_token)
     users = inviter.get_users()
 
+    invitation_service.create_users(users)
+
     # inviter.send_message(user=users[0], message='test')
     return users
 
@@ -113,6 +130,7 @@ def hello():
 @app.post("/invite/request")
 def create_request(request: Request):
     invitation_service.create_request(request=request)
+
 
 # @capp.task
 # def hello():

@@ -7,7 +7,11 @@ class MockRequestResponseUnitOfWork(IRequestResponseUnitOfWork):
     requests_repo: MockRequestsRepository
     responses_repo: MockResponsesRepository
 
-    def __init__(self, requests_repo: MockRequestsRepository, responses_repo: MockResponsesRepository):
+    def __init__(
+        self,
+        requests_repo: MockRequestsRepository,
+        responses_repo: MockResponsesRepository,
+    ):
         self.requests_repo = requests_repo
         self.responses_repo = responses_repo
 

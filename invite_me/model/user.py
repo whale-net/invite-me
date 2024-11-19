@@ -9,6 +9,6 @@ from invite_me.model._shared import id_col
 class User(SQLModel, table=True):
     __tablename__ = "users"
     id: UUID = id_col()
-    name: str = Field(nullable=False)
+    name: str = Field(nullable=False, unique=True, index=True)
     created_at: dt.datetime = Field(nullable=False, default=dt.datetime.now())
     updated_at: dt.datetime = Field(nullable=False, default=dt.datetime.now())

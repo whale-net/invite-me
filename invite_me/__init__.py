@@ -11,6 +11,7 @@ def seed_db():
     todo: move to alembic for db migrations
     """
     from invite_me.db import engine
+
     # import all table clases
     from .model import Request, Response, User  # noqa
 

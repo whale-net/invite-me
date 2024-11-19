@@ -6,6 +6,7 @@ from sqlmodel import SQLModel, Field
 from invite_me.model._shared import id_col, created_updated_col
 import datetime as dt
 
+
 class RequestRecipient(SQLModel, table=True):
     __tablename__ = "request_recipients"
     id: UUID = id_col()
@@ -15,6 +16,7 @@ class RequestRecipient(SQLModel, table=True):
     created_at: dt.datetime = created_updated_col()
     updated_at: dt.datetime = created_updated_col()
 
+
 class RequestState_(Enum):
     INITIALIZED = auto()
 
@@ -23,6 +25,7 @@ class RequestState(SQLModel, table=True):
     __tablename__ = "request_states"
     id: UUID = id_col()
     name: str = Field(default=None)
+
 
 class Request(SQLModel, table=True):
     __tablename__ = "requests"
