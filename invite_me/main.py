@@ -1,5 +1,6 @@
 import os
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import List
 
 from dotenv import load_dotenv
@@ -15,12 +16,19 @@ from invite_me.model import Request, User
 from invite_me.service import InvitationService
 from invite_me.uow.sqlalchemy.request_response import SqlAlchemyRequestResponseUnitOfWork
 
+@dataclass
+class InviterUser:
+    id: str
+    name: str
+    full_user_info: str
+
+
 class Inviter(ABC):
     """
     This is the class that will be inherited for api integrations.
     """
     @abstractmethod
-    def get_users(self) -> List[User]:
+    def get_users(self) -> List[InviterUser]:
         """
         Returns all users formatted appropriately as invite_me.model.user.User.
 
@@ -28,7 +36,7 @@ class Inviter(ABC):
         """
 
     @abstractmethod
-    def send_message(self, user: User, message: str) -> None:
+    def send_message(self, user: InviterUser, message: str) -> None:
         """
         Sends a text message to the listed user.
 
@@ -36,6 +44,7 @@ class Inviter(ABC):
         :param message: string text to send.
         :return: None
         """
+
 
 class SlackInviter(Inviter):
     def __init__(self, slack_token):
@@ -54,16 +63,11 @@ class SlackInviter(Inviter):
             print(f"Error fetching users: {e.response['error']}")
             return []
 
-    def get_users(self) -> List[User]:
+    def get_users(self) -> List[InviterUser]:
+        return [InviterUser(id=sm['id'], name=sm['real_name'], full_user_info=sm) for sm in self._get_slack_members() if not sm['deleted']]
 
-        # how should this resolve? do we want to have a relationship between api users and users? just a quick lookup
-        # by implementation mapping their api user id to our internal user id?
-
-        return [User(id=sm['id'], name=sm['real_name']) for sm in self._get_slack_members() if not sm['deleted']]
-
-    def send_message(self, user: User, message: str) -> None:
-        self._client.chat_postMessage(channel=user.id)
-        pass
+    def send_message(self, user: InviterUser, message: str) -> None:
+        self._client.chat_postMessage(channel=user.id, text="test message")
 
 
 app = FastAPI()
@@ -92,11 +96,12 @@ def hello():
     """
     send task to worker
     """
-    res = CeleryExecutor(_celery.app).execute_static('invite_me.tmp', func='hello_world')
-    print(slack_token)
 
-    return get_slack_members()
-    # return res
+    inviter = SlackInviter(slack_token=slack_token)
+    users = inviter.get_users()
+
+    # res = CeleryExecutor(_celery.app).execute_static('invite_me.tmp', func='hello_world')
+    return users
 
 
 @app.post("/invite/request")
