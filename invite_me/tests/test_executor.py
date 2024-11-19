@@ -1,11 +1,16 @@
 import pytest
 
+from invite_me import _celery
 from invite_me.executors import LocalExecutor, CeleryExecutor
 
 
 @pytest.fixture(scope="package", params=[LocalExecutor, CeleryExecutor])
 def executor(request):
-    yield request.param()
+
+    if request.param == CeleryExecutor:
+        yield request.param(_celery.app)
+    else:
+        yield request.param()
 
 
 def _test_function(a: int, b: int) -> int:

@@ -5,7 +5,7 @@ from invite_me.model import Response
 from invite_me.repositories.interfaces.responses import IResponsesRepository
 
 
-class TestingResponsesRepository(IResponsesRepository):
+class MockResponsesRepository(IResponsesRepository):
     _store: Dict[UUID, Response]
 
     def __init__(self, store: Optional[Dict[UUID, Response]] = None):

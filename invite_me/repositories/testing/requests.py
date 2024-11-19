@@ -5,7 +5,7 @@ from invite_me.model import Request
 from invite_me.repositories.interfaces.requests import IRequestsRepository
 
 
-class TestingRequestsRepository(IRequestsRepository):
+class MockRequestsRepository(IRequestsRepository):
     _store: Dict[UUID, Request]
 
     def __init__(self, store: Optional[Dict[UUID, Request]] = None):

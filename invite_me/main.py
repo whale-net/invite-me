@@ -92,7 +92,7 @@ def hello():
     """
     send task to worker
     """
-    res = CeleryExecutor().execute_static('invite_me.tmp', func='hello_world')
+    res = CeleryExecutor(_celery.app).execute_static('invite_me.tmp', func='hello_world')
     print(slack_token)
 
     return get_slack_members()

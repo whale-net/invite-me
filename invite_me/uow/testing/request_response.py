@@ -1,13 +1,13 @@
-from invite_me.repositories.testing.requests import TestingRequestsRepository
-from invite_me.repositories.testing.responses import TestingResponsesRepository
+from invite_me.repositories.testing.requests import MockRequestsRepository
+from invite_me.repositories.testing.responses import MockResponsesRepository
 from invite_me.uow.interfaces.request_response import IRequestResponseUnitOfWork
 
 
-class TestingRequestResponseUnitOfWork(IRequestResponseUnitOfWork):
-    requests_repo: TestingRequestsRepository
-    responses_repo: TestingResponsesRepository
+class MockRequestResponseUnitOfWork(IRequestResponseUnitOfWork):
+    requests_repo: MockRequestsRepository
+    responses_repo: MockResponsesRepository
 
-    def __init__(self, requests_repo: TestingRequestsRepository, responses_repo: TestingResponsesRepository):
+    def __init__(self, requests_repo: MockRequestsRepository, responses_repo: MockResponsesRepository):
         self.requests_repo = requests_repo
         self.responses_repo = responses_repo
 
