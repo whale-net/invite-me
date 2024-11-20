@@ -1,83 +1,19 @@
 import os
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from typing import List
+from sqlalchemy import select
 
 from dotenv import load_dotenv
 from time import sleep
 
 from fastapi import FastAPI
 
-from slack_sdk import WebClient
-from slack_sdk.errors import SlackApiError
-from invite_me.model import Request
+from invite_me.db import sm
+from invite_me.inviters import SlackExternalInviter
+from invite_me.model import Request, Inviter
 from invite_me.service import InvitationService
 from invite_me.uow.sqlalchemy.request_response import (
     SqlAlchemyRequestResponseUnitOfWork,
 )
 from invite_me.uow.sqlalchemy.users import SqlAlchemyUserUnitOfWork
-
-
-@dataclass
-class InviterUser:
-    id: str
-    name: str
-    full_user_info: str
-
-
-class Inviter(ABC):
-    """
-    This is the class that will be inherited for api integrations.
-    """
-
-    @abstractmethod
-    def get_users(self) -> List[InviterUser]:
-        """
-        Returns all users formatted appropriately as invite_me.model.user.User.
-
-        :return: List of users
-        """
-
-    @abstractmethod
-    def send_message(self, user: InviterUser, message: str) -> None:
-        """
-        Sends a text message to the listed user.
-
-        :param user: user to send to.
-        :param message: string text to send.
-        :return: None
-        """
-
-
-class SlackInviter(Inviter):
-    def __init__(self, slack_token):
-        self._client = WebClient(token=slack_token)
-
-    def _get_slack_members(self):
-        try:
-            # Get the list of users in the workspace
-            response = self._client.users_list()
-            if response["ok"]:
-                return response["members"]
-            else:
-                print("Error fetching users:", response["error"])
-                return []
-        except SlackApiError as e:
-            print(f"Error fetching users: {e.response['error']}")
-            return []
-
-    def get_users(self) -> List[InviterUser]:
-        return [
-            InviterUser(id=sm["id"], name=sm["real_name"], full_user_info=sm)
-            for sm in self._get_slack_members()
-            if (not sm["deleted"])
-            and sm.get("profile")
-            and sm["profile"]["display_name"] == "koni"
-        ]
-
-    def send_message(self, user: InviterUser, message: str) -> None:
-        self._client.chat_postMessage(channel=user.id, text=message)
-
 
 app = FastAPI()
 
@@ -86,15 +22,25 @@ slack_token = os.getenv("AppToken")
 # todo: this is here to wait for the postgres container to spin up. should use a sqlalchemy event to retry
 sleep(1)
 
+session = sm()
 # TODO BETTER WAY TO SETUP DB
-_seed_db = False
+_seed_db = True
 if _seed_db:
     from invite_me import seed_db
 
     seed_db()
 
+    # set slack inviter up
+    inviter = Inviter(inviter_class=SlackExternalInviter.__name__)
+    session.add(inviter)
+    session.commit()
+else:
+    stmt = select(Inviter).where(Inviter.inviter_class == SlackExternalInviter.__name__)
+    inviter = session.execute(stmt).first()[0]
+session.close()
 
 invitation_service = InvitationService(
+    inviter=SlackExternalInviter(slack_token=slack_token, inviter_id=inviter.id),
     request_response_uow=SqlAlchemyRequestResponseUnitOfWork(),
     user_uow=SqlAlchemyUserUnitOfWork(),
 )
@@ -118,10 +64,10 @@ def hello():
     send task to worker
     """
 
-    inviter = SlackInviter(slack_token=slack_token)
-    users = inviter.get_users()
-
-    invitation_service.create_users(users)
+    # inviter = SlackInviter(slack_token=slack_token)
+    # users = inviter.get_users()
+    #
+    # invitation_service.create_users(users)
 
     # inviter.send_message(user=users[0], message='test')
     return users

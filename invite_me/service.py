@@ -1,5 +1,6 @@
 from typing import List
 
+from invite_me.inviters import ExternalInviter
 from invite_me.model import Request, User
 from invite_me.uow.interfaces.request_response import IRequestResponseUnitOfWork
 from invite_me.uow.interfaces.users import IUserUnitOfWork
@@ -11,9 +12,11 @@ class InvitationService:
 
     def __init__(
         self,
+        inviter: ExternalInviter,
         request_response_uow: IRequestResponseUnitOfWork,
         user_uow: IUserUnitOfWork,
     ):
+        self._inviter = inviter
         self._request_response_uow = request_response_uow
         self._user_uow = user_uow
 

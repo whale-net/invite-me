@@ -35,5 +35,3 @@ class TestInvitationService:
         service.create_request(Request(from_user=uuid_extensions.uuid7()))
         # todo more meaningful tests, this is just a starting point
         assert len(requests_repo._store) == 1
-
-

@@ -13,7 +13,7 @@ def seed_db():
     from invite_me.db import engine
 
     # import all table clases
-    from .model import Request, Response, User  # noqa
+    from .model import Request, Response, User, Inviter, InviterUser  # noqa
 
     SQLModel.metadata.drop_all(engine)
     SQLModel.metadata.create_all(engine)
