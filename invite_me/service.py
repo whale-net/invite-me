@@ -16,7 +16,12 @@ class InvitationService:
         request_response_uow: IRequestResponseUnitOfWork,
         user_uow: IUserUnitOfWork,
     ):
+        # todo: this should be a list of inviters
         self._inviter = inviter
+
+        # todo: we should also pull in an inviter user repo
+        # answer the question how do we determine which inviter to use? necessary for multi-inviter
+
         self._request_response_uow = request_response_uow
         self._user_uow = user_uow
 
