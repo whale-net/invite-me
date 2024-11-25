@@ -27,5 +27,13 @@ https://docs.github.com/en/packages/working-with-a-github-packages-registry/work
 ```
 
 ## logging
+Using otel auto logging. It works, but doesn't seem to be super well documented or stable as of writing.
+Python support for logging is in alpha, so that is to be expected.
+
+todo
+- more implementation ideas: https://opentelemetry.io/blog/2023/logs-collection/
+- experiemental logging impl https://github.com/open-telemetry/opentelemetry-python
+
+Ideally we don't require an otel sidecar in each pod, I don't have those kind of resources ($$$)
 
 INSTRUMENTATION https://github.com/open-telemetry/opentelemetry-python-contrib/tree/main/instrumentation
