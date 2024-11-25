@@ -2,19 +2,19 @@ from typing import List
 
 from invite_me.inviters import ExternalInviter
 from invite_me.model import Request, User
-from invite_me.uow.interfaces.request_response import IRequestResponseUnitOfWork
-from invite_me.uow.interfaces.users import IUserUnitOfWork
+from invite_me.model.uow.request_response import RequestResponseUnitOfWork
+from invite_me.model.uow.user import UserUnitOfWork
 
 
 class InvitationService:
-    _request_response_uow: IRequestResponseUnitOfWork
-    _user_uow: IUserUnitOfWork
+    _request_response_uow: RequestResponseUnitOfWork
+    _user_uow: UserUnitOfWork
 
     def __init__(
-        self,
-        inviter: ExternalInviter,
-        request_response_uow: IRequestResponseUnitOfWork,
-        user_uow: IUserUnitOfWork,
+            self,
+            inviter: ExternalInviter,
+            request_response_uow: RequestResponseUnitOfWork,
+            user_uow: UserUnitOfWork,
     ):
         # todo: this should be a list of inviters
         self._inviter = inviter

@@ -1,7 +1,7 @@
 import pytest
 
 from invite_me import _celery
-from invite_me.executors import LocalExecutor, CeleryExecutor
+from invite_me.executor import LocalExecutor, CeleryExecutor
 
 
 @pytest.fixture(scope="package", params=[LocalExecutor, CeleryExecutor])

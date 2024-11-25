@@ -3,12 +3,12 @@ import uuid_extensions
 
 from invite_me.inviters import MockInviter
 from invite_me.model import Request
-from invite_me.repositories.testing.requests import MockRequestsRepository
-from invite_me.repositories.testing.responses import MockResponsesRepository
-from invite_me.repositories.testing.users import MockUsersRepository
+from invite_me.model.repositories.requests import MockRequestsRepository
+from invite_me.model.repositories.responses import MockResponsesRepository
+from invite_me.model.repositories.users import MockUsersRepository
+from invite_me.model.uow.request_response import MockRequestResponseUnitOfWork
+from invite_me.model.uow.user import MockUserUnitOfWork
 from invite_me.service import InvitationService
-from invite_me.uow.testing.request_response import MockRequestResponseUnitOfWork
-from invite_me.uow.testing.users import MockUserUnitOfWork
 
 
 @pytest.fixture(scope="function")

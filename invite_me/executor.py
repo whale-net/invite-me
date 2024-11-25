@@ -77,7 +77,7 @@ class CeleryExecutor(Executor):
 
 class LocalExecutor(Executor):
     """
-    Primarily exists for the purpose of testing. Calls the same methods celery does, but without being connected
+    Calls the same methods celery does, but without being connected
     to the celery channel. Will still pickle and unpickle the object.
     """
 

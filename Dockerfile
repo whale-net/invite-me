@@ -25,4 +25,4 @@ EXPOSE 8000/tcp
 
 #CMD ["uv", "run", "opentelemetry-instrument", "python", "bin/hello_world_forever.py"]
 WORKDIR /app/invite_me
-CMD ["uv", "run", "fastapi", "dev", "main.py","--host", "0.0.0.0", "--port", "8000"]
+CMD ["fastapi", "dev", "main.py","--host", "0.0.0.0", "--port", "8000"]

@@ -1,29 +1,28 @@
 import os
-from sqlalchemy import select
-
-from dotenv import load_dotenv
 from time import sleep
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
+from sqlalchemy import select
 
-from invite_me import run_migrations
-from invite_me.db import sm
+from invite_me.db import engine
 from invite_me.inviters import SlackExternalInviter
 from invite_me.model import Request, Inviter
+from invite_me.model.uow.request_response import SqlAlchemyRequestResponseUnitOfWork
+from invite_me.model.uow.user import SqlAlchemyUserUnitOfWork
 from invite_me.service import InvitationService
-from invite_me.uow.sqlalchemy.request_response import (
-    SqlAlchemyRequestResponseUnitOfWork,
-)
-from invite_me.uow.sqlalchemy.users import SqlAlchemyUserUnitOfWork
+
+load_dotenv()
 
 app = FastAPI()
-
 slack_token = os.getenv("AppToken")
 
 # todo: this is here to wait for the postgres container to spin up. should use a sqlalchemy event to retry
 sleep(1)
-session = sm()
-# TODO BETTER WAY TO SETUP DB
+
+session = engine.get_session()
+
+#
 stmt = select(Inviter).where(Inviter.inviter_class == SlackExternalInviter.__name__)
 inviter = session.execute(stmt).first()[0]
 session.close()
@@ -34,12 +33,6 @@ invitation_service = InvitationService(
     user_uow=SqlAlchemyUserUnitOfWork(),
 )
 
-
-def add(x, y):
-    return x - y
-
-
-load_dotenv()
 
 # Function to get all members of the Slack workspace
 
@@ -66,10 +59,6 @@ def hello():
 def create_request(request: Request):
     invitation_service.create_request(request=request)
 
-
 # @capp.task
 # def hello():
 #     return 'hello world'
-if __name__ == "__main__":
-
-    run_migrations()
