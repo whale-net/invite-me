@@ -5,24 +5,29 @@
 
 # replicaCount: 1
 
-image:
-  repository: ghcr.io/whale-net/invite-me
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+inviteme:
+  image:
+    repository: ghcr.io/whale-net/invite-me
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
 
-#imagePullSecrets: []
-#nameOverride: ""
-#fullnameOverride: ""
+  #imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
 
-resources:
-  # despite recommendations against this, we are going to provide factory defaults because we are the only users
-  limits:
-    cpu: 50m
-    memory: 128Mi
-  requests:
-    cpu: 50m
-    memory: 128Mi
+  resources:
+    # despite recommendations against this, we are going to provide factory defaults because we are the only users
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
+
+  otelCollector:
+    logs:
+      endpoint: 0.0.0.0:4317
 
 service:
   type: ClusterIP

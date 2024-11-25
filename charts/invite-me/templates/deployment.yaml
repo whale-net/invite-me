@@ -34,8 +34,8 @@ spec:
         - name: {{ .Chart.Name }}
 {{/*          securityContext:*/}}
 {{/*            {{- toYaml .Values.securityContext | nindent 12 }}*/}}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.inviteme.image.repository }}:{{ .Values.inviteme.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.inviteme.image.pullPolicy }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -48,8 +48,11 @@ spec:
 {{/*            httpGet:*/}}
 {{/*              path: /*/}}
 {{/*              port: http*/}}
+          env:
+            - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+              value: {{ .Values.inviteme.otelCollector.logs.endpoint }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.inviteme.resources | nindent 12 }}
 {{/*          {{- with .Values.volumeMounts }}*/}}
 {{/*          volumeMounts:*/}}
 {{/*            {{- toYaml . | nindent 12 }}*/}}

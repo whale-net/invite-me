@@ -9,7 +9,11 @@ yaml = helm(
     namespace='invite-me-dev',  # appending '-dev' just in case this is ever ran from prod cluster
     # TODO - where to store?
     values=['charts/invite-me/values.yaml'],
-    set=['image.repository=invite-me', 'otelCollector.enabled=true']
+    set=[
+        'inviteme.image.repository=invite-me',
+        'inviteme.otelCollector.logs.endpoint=invite-me.invite-me-dev.svc.cluster.local:4317',
+        'otelCollector.enabled=true',
+        ]
 )
 
 k8s_yaml(yaml)
