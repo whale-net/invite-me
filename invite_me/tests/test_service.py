@@ -1,6 +1,7 @@
 import pytest
 import uuid_extensions
 
+from invite_me.inviters import MockInviter
 from invite_me.model import Request
 from invite_me.repositories.testing.requests import MockRequestsRepository
 from invite_me.repositories.testing.responses import MockResponsesRepository
@@ -27,6 +28,7 @@ def service(requests_repo, responses_repo):
             requests_repo=requests_repo, responses_repo=responses_repo
         ),
         user_uow=MockUserUnitOfWork(users_repo=MockUsersRepository()),
+        inviter=MockInviter()
     )
 
 

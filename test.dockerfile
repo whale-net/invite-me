@@ -11,4 +11,4 @@ COPY . /app
 WORKDIR /app/invite_me
 
 #CMD ["uv", "run", "celery","-A", "tasks", "worker", "--autoscale", "10", "--loglevel=info"]
-CMD ["uv", "run", "pytest", "tests"]
+CMD ["uv", "run", "pytest", "-s" ,"tests"]

@@ -6,6 +6,7 @@ from time import sleep
 
 from fastapi import FastAPI
 
+from invite_me import run_migrations
 from invite_me.db import sm
 from invite_me.inviters import SlackExternalInviter
 from invite_me.model import Request, Inviter
@@ -21,22 +22,10 @@ slack_token = os.getenv("AppToken")
 
 # todo: this is here to wait for the postgres container to spin up. should use a sqlalchemy event to retry
 sleep(1)
-
 session = sm()
 # TODO BETTER WAY TO SETUP DB
-_seed_db = True
-if _seed_db:
-    from invite_me import seed_db
-
-    seed_db()
-
-    # set slack inviter up
-    inviter = Inviter(inviter_class=SlackExternalInviter.__name__)
-    session.add(inviter)
-    session.commit()
-else:
-    stmt = select(Inviter).where(Inviter.inviter_class == SlackExternalInviter.__name__)
-    inviter = session.execute(stmt).first()[0]
+stmt = select(Inviter).where(Inviter.inviter_class == SlackExternalInviter.__name__)
+inviter = session.execute(stmt).first()[0]
 session.close()
 
 invitation_service = InvitationService(
@@ -70,7 +59,7 @@ def hello():
     # invitation_service.create_users(users)
 
     # inviter.send_message(user=users[0], message='test')
-    return users
+    return None
 
 
 @app.post("/invite/request")
@@ -81,3 +70,6 @@ def create_request(request: Request):
 # @capp.task
 # def hello():
 #     return 'hello world'
+if __name__ == "__main__":
+
+    run_migrations()

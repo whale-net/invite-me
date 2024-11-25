@@ -66,3 +66,12 @@ class SlackExternalInviter(ExternalInviter):
 
     def send_message(self, user: InviterUser, message: str) -> None:
         self._client.chat_postMessage(channel=user.user_id_from_inviter, text=message)
+
+class MockInviter(ExternalInviter):
+    def get_users(self) -> List[InviterUser]:
+        return [
+            InviterUser()
+        ]
+
+    def send_message(self, user: InviterUser, message: str) -> None:
+        pass

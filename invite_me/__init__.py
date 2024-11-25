@@ -4,20 +4,16 @@
 import uuid_extensions
 from sqlmodel import SQLModel
 
+from alembic.config import Config
+from alembic import command
 
-def seed_db():
-    """
-    Right now this runs on every restart of the application, which is frequent when we use hot reloading
-    todo: move to alembic for db migrations
-    """
-    from invite_me.db import engine
 
-    # import all table clases
-    from .model import Request, Response, User, Inviter, InviterUser  # noqa
+def run_migrations():
+    # Load Alembic configuration
+    alembic_cfg = Config("/app/alembic.ini")  # Path to your alembic.ini file
 
-    SQLModel.metadata.drop_all(engine)
-    SQLModel.metadata.create_all(engine)
-
+    # Run upgrade to head
+    command.upgrade(alembic_cfg, "head")
 
 def hello() -> str:
     return uuid_extensions.uuid7()
