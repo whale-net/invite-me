@@ -37,3 +37,27 @@ todo
 Ideally we don't require an otel sidecar in each pod, I don't have those kind of resources ($$$)
 
 INSTRUMENTATION https://github.com/open-telemetry/opentelemetry-python-contrib/tree/main/instrumentation
+
+## deployment
+
+Artifacts:
+- Docker image published to github container repository (ghcr) via github actions
+- Helm chart published via github pages (TODO link) via github actions
+
+### local dev deployment
+Tilt! https://tilt.dev/. Think of it like docker-compose with hot-reload.
+
+Install:
+- kubectl, docker, docker-desktop
+    - enable k8s cluster in docker-desktop 
+- tilt
+
+
+Using docker-desktop cluster. Apparently not as good as using kind cluster, but also convenient and already setup.
+(see ctlptl for managing a kind cluster)
+
+Set kubectl config to docker-desktop to avoid accidentally deploying to production cluster if that is current-context
+```bash
+kubectl config use-context docker-desktop
+```
+

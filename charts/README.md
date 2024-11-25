@@ -1,0 +1,1 @@
+using this structure to keep charts isolated from source code and makes it easy to expose this project as a helm repo via github pages

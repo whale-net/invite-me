@@ -1,0 +1,38 @@
+{{- if .Values.otelCollector.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-conf
+  labels:
+    app: opentelemetry
+    component: otel-collector-conf
+data:
+  otel-collector-config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: ${env:MY_POD_IP}:4317
+          http:
+            endpoint: ${env:MY_POD_IP}:4318
+    processors:
+      # batch:
+      # memory_limiter:
+        # # 80% of maximum memory up to 2G
+        # limit_mib: 200
+        # 25% of limit up to 2G
+        # spike_limit_mib: 64
+        # check_interval: 5s
+    # extensions:
+    #  zpages: {}
+    exporters:
+      debug:
+    service:
+      # idk what this does?
+      # extensions: [zpages]
+      pipelines:
+        logs:
+          receivers: [otlp]
+          # processors: [memory_limiter, batch]
+          exporters: [debug]
+{{- end }}
