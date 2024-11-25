@@ -28,7 +28,7 @@ def service(requests_repo, responses_repo):
             requests_repo=requests_repo, responses_repo=responses_repo
         ),
         user_uow=MockUserUnitOfWork(users_repo=MockUsersRepository()),
-        inviter=MockInviter()
+        inviter=MockInviter(),
     )
 
 

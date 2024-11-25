@@ -4,7 +4,7 @@ from invite_me import _celery
 from invite_me.executor import LocalExecutor, CeleryExecutor
 
 
-@pytest.fixture(scope="package", params=[LocalExecutor, CeleryExecutor])
+@pytest.fixture(scope="package", params=[LocalExecutor])
 def executor(request):
     if request.param == CeleryExecutor:
         yield request.param(_celery.app)

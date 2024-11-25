@@ -1,5 +1,9 @@
-from invite_me.db import engine
-from invite_me.model.repositories.users import UsersRepository, SqlAlchemyUsersRepository, MockUsersRepository
+from invite_me.db import EngineWrapper
+from invite_me.model.repositories.users import (
+    UsersRepository,
+    SqlAlchemyUsersRepository,
+    MockUsersRepository,
+)
 
 
 class UserUnitOfWork:
@@ -19,8 +23,11 @@ class UserUnitOfWork:
 
 
 class SqlAlchemyUserUnitOfWork(UserUnitOfWork):
+    def __init__(self, engine: EngineWrapper):
+        self._engine = engine
+
     def __enter__(self):
-        self._session = engine.get_session()
+        self._session = self._engine.get_session()
         self.users_repository = SqlAlchemyUsersRepository(session=self._session)
 
         return self

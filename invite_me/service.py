@@ -11,10 +11,10 @@ class InvitationService:
     _user_uow: UserUnitOfWork
 
     def __init__(
-            self,
-            inviter: ExternalInviter,
-            request_response_uow: RequestResponseUnitOfWork,
-            user_uow: UserUnitOfWork,
+        self,
+        inviter: ExternalInviter,
+        request_response_uow: RequestResponseUnitOfWork,
+        user_uow: UserUnitOfWork,
     ):
         # todo: this should be a list of inviters
         self._inviter = inviter

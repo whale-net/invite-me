@@ -1,10 +1,16 @@
 from abc import ABC, abstractmethod
 
-from invite_me.db import engine
-from invite_me.model.repositories.requests import RequestsRepository, SqlAlchemyRequestsRepository, \
-    MockRequestsRepository
-from invite_me.model.repositories.responses import ResponsesRepository, SqlAlchemyResponsesRepository, \
-    MockResponsesRepository
+from invite_me.db import EngineWrapper
+from invite_me.model.repositories.requests import (
+    RequestsRepository,
+    SqlAlchemyRequestsRepository,
+    MockRequestsRepository,
+)
+from invite_me.model.repositories.responses import (
+    ResponsesRepository,
+    SqlAlchemyResponsesRepository,
+    MockResponsesRepository,
+)
 
 
 class RequestResponseUnitOfWork(ABC):
@@ -32,8 +38,11 @@ class SqlAlchemyRequestResponseUnitOfWork(RequestResponseUnitOfWork):
     requests_repo: SqlAlchemyRequestsRepository
     responses_repo: SqlAlchemyResponsesRepository
 
+    def __init__(self, engine: EngineWrapper):
+        self._engine = engine
+
     def __enter__(self):
-        self._session = engine.get_session()
+        self._session = self._engine.get_session()
         self.requests_repo = SqlAlchemyRequestsRepository(session=self._session)
         self.responses_repo = SqlAlchemyResponsesRepository(session=self._session)
 
@@ -54,9 +63,9 @@ class MockRequestResponseUnitOfWork(RequestResponseUnitOfWork):
     responses_repo: MockResponsesRepository
 
     def __init__(
-            self,
-            requests_repo: MockRequestsRepository,
-            responses_repo: MockResponsesRepository,
+        self,
+        requests_repo: MockRequestsRepository,
+        responses_repo: MockResponsesRepository,
     ):
         self.requests_repo = requests_repo
         self.responses_repo = responses_repo

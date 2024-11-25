@@ -1,3 +1,5 @@
+import time
+
 import uuid_extensions
 from sqlmodel import Field
 
@@ -12,7 +14,7 @@ def id_col():
     :return:
         sqlmodel.Field: Column configured to be a primary key and of type uuid7
     """
-    return Field(primary_key=True, default=uuid_extensions.uuid7())
+    return Field(primary_key=True, default=uuid_extensions.uuid7(ns=int(time.time())))
 
 
 def created_updated_col():

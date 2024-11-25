@@ -1,8 +1,11 @@
 from abc import ABC, abstractmethod
 
-from invite_me.db import engine
-from invite_me.model.repositories.inviters import InvitersRepository, SqlAlchemyInvitersRepository, \
-    MockInvitersRepository
+from invite_me.db import EngineWrapper
+from invite_me.model.repositories.inviters import (
+    InvitersRepository,
+    SqlAlchemyInvitersRepository,
+    MockInvitersRepository,
+)
 
 
 class InviterResponseUnitOfWork(ABC):
@@ -28,8 +31,11 @@ class InviterResponseUnitOfWork(ABC):
 class SqlAlchemyInviterResponseUnitOfWork(InviterResponseUnitOfWork):
     inviters_repo: SqlAlchemyInvitersRepository
 
+    def __init__(self, engine: EngineWrapper):
+        self._engine = engine
+
     def __enter__(self):
-        self._session = engine.get_session()
+        self._session = self._engine.get_session()
         self.inviters_repo = SqlAlchemyInvitersRepository(session=self._session)
 
         return self
@@ -48,8 +54,8 @@ class MockInviterResponseUnitOfWork(InviterResponseUnitOfWork):
     inviters_repo: MockInvitersRepository
 
     def __init__(
-            self,
-            inviters_repo: MockInvitersRepository,
+        self,
+        inviters_repo: MockInvitersRepository,
     ):
         self.inviters_repo = inviters_repo
 

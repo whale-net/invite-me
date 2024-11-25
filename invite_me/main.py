@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from sqlalchemy import select
 
-from invite_me.db import engine
+from invite_me.db import engine, run_migrations
 from invite_me.inviters import SlackExternalInviter
 from invite_me.model import Request, Inviter
 from invite_me.model.uow.request_response import SqlAlchemyRequestResponseUnitOfWork
@@ -20,17 +20,17 @@ slack_token = os.getenv("AppToken")
 # todo: this is here to wait for the postgres container to spin up. should use a sqlalchemy event to retry
 sleep(1)
 
+run_migrations()
 session = engine.get_session()
 
-#
 stmt = select(Inviter).where(Inviter.inviter_class == SlackExternalInviter.__name__)
 inviter = session.execute(stmt).first()[0]
 session.close()
 
 invitation_service = InvitationService(
     inviter=SlackExternalInviter(slack_token=slack_token, inviter_id=inviter.id),
-    request_response_uow=SqlAlchemyRequestResponseUnitOfWork(),
-    user_uow=SqlAlchemyUserUnitOfWork(),
+    request_response_uow=SqlAlchemyRequestResponseUnitOfWork(engine=engine),
+    user_uow=SqlAlchemyUserUnitOfWork(engine=engine),
 )
 
 
@@ -58,6 +58,7 @@ def hello():
 @app.post("/invite/request")
 def create_request(request: Request):
     invitation_service.create_request(request=request)
+
 
 # @capp.task
 # def hello():

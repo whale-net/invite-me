@@ -65,9 +65,7 @@ def run_migrations_online() -> None:
     connectable = create_engine(db.get_connection_string())
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

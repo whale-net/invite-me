@@ -4,7 +4,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
-from invite_me.model import Request, Inviter
+from invite_me.model import Inviter
 
 
 class InvitersRepository:
