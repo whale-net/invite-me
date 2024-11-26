@@ -51,6 +51,8 @@ spec:
           env:
             - name: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
               value: {{ .Values.inviteme.otelCollector.logs.endpoint }}
+            - name: POSTGRES_CONNECTION_STRING
+              value: {{ .Values.inviteme.postgres.connection }}
           resources:
             {{- toYaml .Values.inviteme.resources | nindent 12 }}
 {{/*          {{- with .Values.volumeMounts }}*/}}

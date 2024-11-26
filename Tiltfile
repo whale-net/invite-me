@@ -2,6 +2,7 @@ docker_build(
     'invite-me',
     context='.',
     live_update=[
+        # TODO update
         sync('.', '/opt'),
         run('source .venv/bin/activate && uv pip install .', trigger='./uv.lock')
     ]

@@ -5,6 +5,9 @@ import logging
 import datetime
 import os
 
+import sqlalchemy
+
+
 A = sys.maxsize / 4
 B = sys.maxsize / 2
 C = 15/16 * sys.maxsize
@@ -29,6 +32,8 @@ def hell_o_world():
 
 def do_python_connection():
     logger.info('about to make python connection')
+    engine = sqlalchemy.create_engine(f"postgresql+psycopg2://{os.getenv('POSTGRES_CONNECTION_STRING')}")
+    connection = engine.connect()
     logger.info('finished making python connection :)')
 
 def forever():
