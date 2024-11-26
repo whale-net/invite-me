@@ -5,9 +5,8 @@ A service which allows invitations to be sent and accepted or declined across di
 ## setup
 ```
 uv venv
-```
-```
-uv pip install .
+source .venv/bin/activate
+uv sync
 ```
 
 ## install new package

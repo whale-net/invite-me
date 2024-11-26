@@ -1,8 +1,8 @@
-{{- if .Values.otelCollector.enabled -}}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: otel-collector
+  namespace: invite-me-dev
   labels:
     app: opentelemetry
     component: otel-collector
@@ -12,8 +12,8 @@ spec:
       app: opentelemetry
       component: otel-collector
   minReadySeconds: 5
-{{/*  progressDeadlineSeconds: 120*/}}
-{{/*  replicas: 1*/}}
+#  progressDeadlineSeconds: 120
+#  replicas: 1
   template:
     metadata:
       labels:
@@ -60,4 +60,3 @@ spec:
               - key: otel-collector-config
                 path: otel-collector-config.yaml
           name: otel-collector-config-vol
-{{- end }}

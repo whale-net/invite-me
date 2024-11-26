@@ -45,10 +45,6 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-# intended for dev use only - does not run as sidecar
-otelCollector:
-  enabled: False
-
 #podAnnotations: {}
 #podLabels: {}
 

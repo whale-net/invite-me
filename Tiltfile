@@ -1,19 +1,27 @@
 docker_build(
     'invite-me',
     context='.',
+    live_update=[
+        sync('.', '/opt'),
+        run('source .venv/bin/activate && uv pip install .', trigger='./uv.lock')
+    ]
 )
 
-yaml = helm(
-    'charts/invite-me',
-    name='invite-me',
-    namespace='invite-me-dev',  # appending '-dev' just in case this is ever ran from prod cluster
-    # TODO - where to store?
-    values=['charts/invite-me/values.yaml'],
-    set=[
-        'inviteme.image.repository=invite-me',
-        'inviteme.otelCollector.logs.endpoint=http://otel-collector.invite-me-dev.svc.cluster.local:4317',
-        'otelCollector.enabled=true',
-        ]
-)
+# create otel collector
+k8s_yaml([
+    'charts/invite-me/dev/otel_collector/config.yaml',
+    'charts/invite-me/dev/otel_collector/deployment.yaml',
+    'charts/invite-me/dev/otel_collector/service.yaml'
+])
 
-k8s_yaml(yaml)
+# create postgres
+
+# create invite-me app
+k8s_yaml(
+    helm(
+        'charts/invite-me',
+        name='invite-me',
+        namespace='invite-me-dev',  # appending '-dev' just in case this is ever ran from prod cluster
+        values=['charts/invite-me/dev/dev_values.yaml'],
+    )
+)

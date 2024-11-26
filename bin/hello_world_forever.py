@@ -27,11 +27,16 @@ def hell_o_world():
         logger.critical('this should die because of bad math')
         logger.debug('but really this is a debug message')
 
+def do_python_connection():
+    logger.info('about to make python connection')
+    logger.info('finished making python connection :)')
+
 def forever():
     while True:
         hell_o_world()
+        do_python_connection()
         
-        sleeper_time = randint(5, 10)
+        sleeper_time = randint(1,3) #  10)
         logger.info('night night it''s sleepy time %s', sleeper_time)
         time.sleep(sleeper_time)
 
