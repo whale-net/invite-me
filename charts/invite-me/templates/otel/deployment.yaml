@@ -47,7 +47,7 @@ spec:
                 apiVersion: v1
                 fieldPath: status.podIP
           - name: GOMEMLIMIT
-            value: 1600MiB
+            value: 200MiB
         volumeMounts:
         - name: otel-collector-config-vol
           mountPath: /conf
