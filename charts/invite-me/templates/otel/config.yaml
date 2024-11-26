@@ -11,10 +11,11 @@ data:
     receivers:
       otlp:
         protocols:
+          {{/*bind to the pod IP, otherwise it's only localhost*/}}
           grpc:
-            # endpoint: ${env:MY_POD_IP}:4317
-          http:
-            # endpoint: ${env:MY_POD_IP}:4318
+            endpoint: ${env:MY_POD_IP}:4317
+{{/*          http:*/}}
+{{/*            endpoint: ${env:MY_POD_IP}:4318*/}}
     processors:
       # batch:
       # memory_limiter:

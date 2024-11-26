@@ -1,6 +1,6 @@
 {{- if .Values.otelCollector.enabled -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: otel-collector
   labels:
@@ -12,8 +12,8 @@ spec:
       app: opentelemetry
       component: otel-collector
   minReadySeconds: 5
-  progressDeadlineSeconds: 120
-  replicas: 1
+{{/*  progressDeadlineSeconds: 120*/}}
+{{/*  replicas: 1*/}}
   template:
     metadata:
       labels:
@@ -48,6 +48,8 @@ spec:
                 fieldPath: status.podIP
           - name: GOMEMLIMIT
             value: 200MiB
+          - name: OTEL_RESOURCE_ATTRIBUTES
+            value: "k8s.pod.ip=$(MY_POD_IP)"
         volumeMounts:
         - name: otel-collector-config-vol
           mountPath: /conf

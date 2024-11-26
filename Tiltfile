@@ -11,7 +11,7 @@ yaml = helm(
     values=['charts/invite-me/values.yaml'],
     set=[
         'inviteme.image.repository=invite-me',
-        'inviteme.otelCollector.logs.endpoint=invite-me.invite-me-dev.svc.cluster.localyou ',
+        'inviteme.otelCollector.logs.endpoint=http://otel-collector.invite-me-dev.svc.cluster.local:4317',
         'otelCollector.enabled=true',
         ]
 )
