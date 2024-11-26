@@ -15,6 +15,10 @@ k8s_yaml([
 ])
 
 # create postgres
+k8s_yaml([
+    'charts/invite-me/dev/postgres/statefulset.yaml',
+    'charts/invite-me/dev/postgres/service.yaml'
+])
 
 # create invite-me app
 k8s_yaml(

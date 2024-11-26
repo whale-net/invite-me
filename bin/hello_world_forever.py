@@ -6,8 +6,8 @@ import datetime
 import os
 
 A = sys.maxsize / 4
-B = 1/4 + sys.maxsize / 2
-C = 3/4 + 15/16 * sys.maxsize
+B = sys.maxsize / 2
+C = 15/16 * sys.maxsize
 
 # TOOD - python defined configs?
 # the flat file configs hurt my head
@@ -36,7 +36,7 @@ def forever():
         hell_o_world()
         do_python_connection()
         
-        sleeper_time = randint(1,3) #  10)
+        sleeper_time = randint(10,20) #  10)
         logger.info('night night it''s sleepy time %s', sleeper_time)
         time.sleep(sleeper_time)
 
