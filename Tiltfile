@@ -1,11 +1,14 @@
 docker_build(
     'invite-me',
-    context='.',
-    live_update=[
-        # TODO update
-        sync('.', '/opt'),
-        run('source .venv/bin/activate && uv pip install .', trigger='./uv.lock')
-    ]
+    context='.' #,
+#    live_update=[
+#        sync('./bin', '/opt/bin'),
+#        sync('./invite_me', '/opt/invite_me'),
+#        sync('./pyproject.toml', '/opt'),
+#        sync('./uv.lock', '/opt'),
+#        sync('./README.md', '/opt'),
+#        run('source .venv/bin/activate && uv sync', trigger='./uv.lock')
+#    ]
 )
 
 # create otel collector

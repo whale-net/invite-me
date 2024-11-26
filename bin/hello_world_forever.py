@@ -41,7 +41,7 @@ def forever():
         hell_o_world()
         do_python_connection()
         
-        sleeper_time = randint(10,20) #  10)
+        sleeper_time = randint(5,15)
         logger.info('night night it''s sleepy time %s', sleeper_time)
         time.sleep(sleeper_time)
 

@@ -7,4 +7,4 @@ inviteme:
       endpoint: http://otel-collector.invite-me-dev.svc.cluster.local:4317
 
   postgres:
-    connection: postgres:fish123@localhost:5432/postgres
+    connection: postgres:fish123@psql.invite-me-dev.svc.cluster.local:5432/postgres
