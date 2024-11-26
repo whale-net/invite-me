@@ -15,7 +15,7 @@ data:
           # bind to the pod IP, otherwise it's only localhost
           grpc:
             endpoint: ${env:MY_POD_IP}:4317
-    processors:
+    processors: {}
       # batch:
       # memory_limiter:
         # # 80% of maximum memory up to 2G
