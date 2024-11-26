@@ -5,9 +5,12 @@ import logging
 import datetime
 import os
 
+import sqlalchemy
+
+
 A = sys.maxsize / 4
-B = 1/4 + sys.maxsize / 2
-C = 3/4 + 15/16 * sys.maxsize
+B = sys.maxsize / 2
+C = 15/16 * sys.maxsize
 
 # TOOD - python defined configs?
 # the flat file configs hurt my head
@@ -27,11 +30,18 @@ def hell_o_world():
         logger.critical('this should die because of bad math')
         logger.debug('but really this is a debug message')
 
+def do_python_connection():
+    logger.info('about to make python connection')
+    engine = sqlalchemy.create_engine(f"postgresql+psycopg2://{os.getenv('POSTGRES_CONNECTION_STRING')}")
+    connection = engine.connect()
+    logger.info('finished making python connection :)')
+
 def forever():
     while True:
         hell_o_world()
+        do_python_connection()
         
-        sleeper_time = randint(10, 20)
+        sleeper_time = randint(5,15)
         logger.info('night night it''s sleepy time %s', sleeper_time)
         time.sleep(sleeper_time)
 
