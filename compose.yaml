@@ -17,11 +17,6 @@ services:
       - "8000:8000"
     environment:
       DB_CONN_STRING: "postgresql+psycopg://postgres:mysecretpassword@postgres:5432/postgres"
-    develop:
-      watch:
-        - action: sync
-          path: .
-          target: /app
     depends_on:
       - rabbit
       - worker

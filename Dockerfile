@@ -24,5 +24,5 @@ ENV OTEL_EXPORTER_OTLP_INSECURE=true
 EXPOSE 8000/tcp
 
 #CMD ["uv", "run", "opentelemetry-instrument", "python", "bin/hello_world_forever.py"]
-WORKDIR /app/invite_me
-CMD ["fastapi", "dev", "main.py","--host", "0.0.0.0", "--port", "8000"]
+WORKDIR /app
+CMD ["fastapi", "dev", "invite_me/main.py","--host", "0.0.0.0", "--port", "8000"]
