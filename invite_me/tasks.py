@@ -1,0 +1,30 @@
+import pickle
+from typing import Optional
+
+from celery import Celery
+
+# App defined here for worker
+app = Celery("tasks", broker="pyamqp://guest@rabbit//", backend="rpc://guest@rabbitmq")
+
+
+@app.task(name="execute_obj")
+def execute_obj(obj, func, *args, **kwargs):
+    return pickle.dumps(getattr(pickle.loads(obj), func)(*args, **kwargs))
+
+
+@app.task(name="execute_static")
+def execute_static(
+    module: str, cls: Optional[str] = None, func: Optional[str] = None, *args, **kwargs
+):
+    import importlib
+
+    mod = importlib.import_module(module)
+    res = None
+    if cls is not None:
+        mod = getattr(mod, cls)
+        if func is None:
+            res = mod(*args, **kwargs)
+
+    if not res:
+        res = getattr(mod, func)(*args, **kwargs)
+    return pickle.dumps(res)
